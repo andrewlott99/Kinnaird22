@@ -5,8 +5,14 @@ from sympy import factorint
 from math import factorial as fact
 
 
-K=5
-M=24
+LCMlist_6 = [12,18,24]
+
+LCMlist_7 = [36,48]
+
+LCMlist_10 = [90,120,156,162,288,384]
+
+
+
 
 
 def right_div(n):
@@ -85,23 +91,27 @@ def make_cs_list(mod_list):
   return list
 
 
-n=24
+def check_if_minimal(covsys):
+  T = 0
+  for k in range(0,len(covsys)):
+    tempcs = covsys.copy()
+    del tempcs[k]
+    if check_if_cs(tempcs) == True:
+        T = 1
+  if T == 0:
+    return True
+  else:
+    return False
 
-print(factorint(n))
 
-LCMlist_7 = [12,18,24,36,48]
-
-
-
-LCMlist_10 = [90,120,156,162,288,384]
 
 
 
 
 PotentialModLists = []
 
-for L in LCMlist_7:
-  for k in range(5,8):
+for L in LCMlist_6:
+  for k in range(5,7):
     for modlist in findsubsets(right_div(L), k):
       recipsum=0
       for i in range(0,len(modlist)):
@@ -119,11 +129,16 @@ print(len(PotentialModLists))
 
 
 
+total_cs_list = []
 for modlist in PotentialModLists:
   for sys in make_cs_list(modlist):
-    if check_if_cs(sys) == True:
-      print(sys)
+    if check_if_cs(sys) == True and check_if_minimal(sys):
+      total_cs_list = total_cs_list + [sys]
 
+
+
+for i in range(0, len(total_cs_list)):
+  print(total_cs_list[i])
 
 
 
