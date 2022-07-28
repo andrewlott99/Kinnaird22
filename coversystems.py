@@ -5,13 +5,31 @@ from sympy import factorint
 from math import factorial as fact
 
 
+
+
+
+
+
 LCMlist_6 = [12,18,24]
 
 LCMlist_7 = [36,48]
 
+LCMlist_8 = [30, 54, 72, 96]
+
 LCMlist_10 = [90,120,156,162,288,384]
 
 
+def makegrid(d,n):
+    Grid = []
+    if d==1:
+        for i in range(1,n+1):
+            Grid=Grid + [[i]]
+    else: 
+        for q in makegrid(d-1,n):
+            for i in range(1,n+1):
+               p = q + [i]
+               Grid = Grid + [p]
+    return Grid
 
 
 
@@ -25,7 +43,14 @@ def right_div(n):
 
 
 
-#hello
+def first_n_integers(n):
+  arr = []
+  for i in range(1,n+1):
+    arr = arr + [i]
+
+  return arr
+
+
 
 
 
@@ -59,6 +84,20 @@ def get_modlcm(system):
     lcm = find_lcm(lcm, system[i][1])
 
   return lcm
+
+
+def get_listlcm(list):
+  if len(list)==1:
+    return list[0]
+  num1 = list[0]
+  num2 = list[1]
+  lcm = find_lcm(num1, num2)
+
+  for i in range(2, len(list)):
+    lcm = find_lcm(lcm, list[i])
+
+  return lcm
+
 
 
 
@@ -103,6 +142,114 @@ def check_if_minimal(covsys):
   else:
     return False
 
+def prepartition(S,k):
+  allparts = []
+  r = len(S)
+  if r == 1:
+    for i in range(0,k):
+      allparts = allparts + [[[S[0],i]]]
+  else: 
+    tempS = S.copy()
+    del tempS[r-1]
+    for part in prepartition(tempS, k):
+        for i in range(0,k):
+          newpart = []
+          newpart = part + [[S[r-1], i]]
+          allparts = allparts + [newpart]
+  return allparts
+
+def fullpartition(S,k):
+  allparts = []
+  key = prepartition(S,k)
+  for prepart in key:  
+    tracker = 0
+    part = []  
+    for l in range(0,k):
+      D = []
+      for mod in prepart:
+        if mod[1] == l:
+          D = D+[mod[0]]
+      if len(D)==0:
+          tracker = 1
+      part = part + [D]
+    if tracker == 0:
+
+      allparts = allparts + [part]
+
+  return allparts
+
+
+
+
+  
+
+
+
+def check_if_bad(moduli_list):
+  recipsum=0
+  for m in moduli_list:
+    recipsum=recipsum+(1/m)
+  if recipsum < 1:
+    return "Bad"
+  L = get_listlcm(moduli_list)
+  P = factorint(L)
+  s = len(P)
+
+  if s == 1: 
+    return "Don't know"
+
+  for i in range(0,s):
+    tally = 0 
+    p = list(P)[i]
+    a = list(P.values())[i]
+    j = a
+    while j>0:
+      count = 0
+      for m in moduli_list:
+        if m % (p**j) == 0 and m % (p**(j+1)) != 0:
+          count = count +1
+      tally = tally + (p**(a-j))*count
+
+      if tally < p**(a-j+1): 
+        for m in moduli_list:
+          if m % (p**j) == 0:
+            moduli_list.remove(m)
+        return check_if_bad(moduli_list)
+      j = j-1
+    
+  for i in range(0,s):
+    M_0 = []
+    M_1 = []
+    p = list(P)[i]
+    for m in moduli_list:
+      if m % p != 0:
+        M_0 = M_0 + [m]
+      else: 
+        M_1 = M_1 + [m]
+
+    D = fullpartition(M_1, p)
+
+    good_partition_found = 1
+    for partition in D: 
+      currentcheck = 0
+      for w in range(0,p):
+        newmods = M_0.copy()
+        for y in partition[w]:
+          newmods = newmods + [int(y/p)]
+        if check_if_bad(newmods) == "Bad":
+          currentcheck = 1
+      if currentcheck == 0:
+        good_partition_found = 0
+    if good_partition_found == 1:
+      return "Bad"
+    else: return "Don't know"
+
+
+
+
+
+
+
 
 
 
@@ -110,36 +257,47 @@ def check_if_minimal(covsys):
 
 PotentialModLists = []
 
-for L in LCMlist_6:
-  for k in range(5,7):
+for L in LCMlist_10:
+  for k in range(5,11):
     for modlist in findsubsets(right_div(L), k):
-      recipsum=0
-      for i in range(0,len(modlist)):
-        recipsum=recipsum+(1/modlist[i])
-      if recipsum >= 1:
         PotentialModLists = PotentialModLists + [modlist]
+
+
 
 PotentialModLists = set(PotentialModLists)
 
+
 PotentialModLists = [list(modlist) for modlist in PotentialModLists]
+
+
 
 print(len(PotentialModLists))
 
 
+count = 0
 
+FinalModLists = []
 
-
-total_cs_list = []
 for modlist in PotentialModLists:
-  for sys in make_cs_list(modlist):
+  solidmodlist = modlist.copy()
+  if check_if_bad(modlist) == "Don't know":
+    FinalModLists = FinalModLists + [solidmodlist]
+
+print(len(FinalModLists))
+
+
+
+
+'''total_cs_list = []
+for candidate in FinalModLists:
+  for sys in make_cs_list(candidate):
     if check_if_cs(sys) == True and check_if_minimal(sys):
       total_cs_list = total_cs_list + [sys]
 
 
 
 for i in range(0, len(total_cs_list)):
-  print(total_cs_list[i])
-
+  print(total_cs_list[i])'''
 
 
 
