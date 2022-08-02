@@ -32,6 +32,19 @@ def makegrid(d,n):
     return Grid
 
 
+def remove_residues(arr,d,r):
+
+  for k in arr:
+    if k%d == r:
+      arr.remove(k)
+
+
+
+
+
+
+
+
 
 def right_div(n):
   div_arr = []
@@ -119,7 +132,7 @@ def make_cs_list(mod_list):
   list = []
   l=len(mod_list)
   if l==1:
-      list= list + [[[0,mod_list[0]]]]
+    list= list + [[[0,mod_list[0]]]]
   else:
     m = mod_list[0]
     del mod_list[0]
@@ -128,6 +141,68 @@ def make_cs_list(mod_list):
         d = c + [[j,m]]
         list = list + [d]
   return list
+
+
+def make_cs_shortlist(mod_list):
+  lst = []
+  mod_list.sort(reverse = True)
+  l=len(mod_list)
+
+
+  if l==1:
+    lst= lst + [[[0,mod_list[0]]]]
+  else:
+    m = mod_list[0]
+    del mod_list[0]
+    for c in make_cs_shortlist(mod_list):
+      relevantresidues = []
+      for x in range(0, m):
+        relevantresidues = relevantresidues + [x]
+      for w in c:
+        if m%w[1] == 0:
+          remove_residues(relevantresidues, w[1], w[0])
+      for z in relevantresidues:
+        u = c+[[z,m]]
+        lst = lst + [u]
+  return lst
+
+
+
+
+
+
+
+lstt =  make_cs_shortlist([3,4,12])
+
+print(lstt)
+
+lst = lstt.copy()
+
+for sys in lst:
+  m = sys[len(sys)-1][0] 
+  for e in sys:
+    e[0]=(e[0]-m)%e[1]
+
+print(lst)
+
+
+
+'''mod_list = [3,4,12]
+
+mod_list2 = mod_list.copy()
+
+
+print(make_cs_shortlist(mod_list))
+
+
+
+
+print(make_cs_shortlist_zeroed(mod_list2))'''
+
+
+
+
+
 
 
 def check_if_minimal(covsys):
@@ -255,10 +330,10 @@ def check_if_bad(moduli_list):
 
 
 
-PotentialModLists = []
+'''PotentialModLists = []
 
 for L in LCMlist_10:
-  for k in range(5,11):
+  for k in range(8,9):
     for modlist in findsubsets(right_div(L), k):
         PotentialModLists = PotentialModLists + [modlist]
 
@@ -288,16 +363,15 @@ print(len(FinalModLists))
 
 
 
-'''total_cs_list = []
+
 for candidate in FinalModLists:
-  for sys in make_cs_list(candidate):
-    if check_if_cs(sys) == True and check_if_minimal(sys):
-      total_cs_list = total_cs_list + [sys]
+  for sys in make_cs_shortlist(candidate):
+    if check_if_cs(sys) == True and check_if_minimal(sys)==True:
+      print(sys)
+'''
 
 
 
-for i in range(0, len(total_cs_list)):
-  print(total_cs_list[i])'''
 
 
 
