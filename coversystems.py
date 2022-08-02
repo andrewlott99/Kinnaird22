@@ -39,13 +39,6 @@ def remove_residues(arr,d,r):
       arr.remove(k)
 
 
-
-
-
-
-
-
-
 def right_div(n):
   div_arr = []
   for i in range(2,math.floor(n/2)+1):
@@ -53,7 +46,6 @@ def right_div(n):
       div_arr=div_arr+[i]
   div_arr=div_arr+[n]
   return div_arr
-
 
 
 def first_n_integers(n):
@@ -64,12 +56,8 @@ def first_n_integers(n):
   return arr
 
 
-
-
-
 def findsubsets(s, n):
     return list(itertools.combinations(s, n))
-
 
 def find_lcm(num1,num2):
   if(num1>num2):
@@ -87,7 +75,6 @@ def find_lcm(num1,num2):
   lcm = int(int(num1 * num2)/int(gcd))
   return lcm
 
-
 def get_modlcm(system):
   num1 = system[0][1]
   num2 = system[1][1]
@@ -97,7 +84,6 @@ def get_modlcm(system):
     lcm = find_lcm(lcm, system[i][1])
 
   return lcm
-
 
 def get_listlcm(list):
   if len(list)==1:
@@ -111,8 +97,13 @@ def get_listlcm(list):
 
   return lcm
 
-
-
+def RemoveResidues(m, d, r):
+  residues = []
+  for k in range(0, m): 
+    if k % d != r:
+      residues = residues + [[k,m]]
+  return(residues)
+print(RemoveResidues(27,3,2))
 
 def check_if_cs(system):
   tracker1 = 0
@@ -167,11 +158,6 @@ def make_cs_shortlist(mod_list):
   return lst
 
 
-
-
-
-
-
 lstt =  make_cs_shortlist([3,4,12])
 
 print(lstt)
@@ -186,7 +172,6 @@ for sys in lst:
 print(lst)
 
 
-
 '''mod_list = [3,4,12]
 
 mod_list2 = mod_list.copy()
@@ -194,15 +179,7 @@ mod_list2 = mod_list.copy()
 
 print(make_cs_shortlist(mod_list))
 
-
-
-
 print(make_cs_shortlist_zeroed(mod_list2))'''
-
-
-
-
-
 
 
 def check_if_minimal(covsys):
@@ -252,13 +229,6 @@ def fullpartition(S,k):
       allparts = allparts + [part]
 
   return allparts
-
-
-
-
-  
-
-
 
 def check_if_bad(moduli_list):
   recipsum=0
@@ -319,38 +289,22 @@ def check_if_bad(moduli_list):
       return "Bad"
     else: return "Don't know"
 
+PotentialModLists = []
 
-
-
-
-
-
-
-
-
-
-
-'''PotentialModLists = []
-
+<<<<<<< Updated upstream
 for L in LCMlist_10:
+=======
+for L in LCMlist_8:
+>>>>>>> Stashed changes
   for k in range(8,9):
     for modlist in findsubsets(right_div(L), k):
         PotentialModLists = PotentialModLists + [modlist]
 
-
-
 PotentialModLists = set(PotentialModLists)
-
 
 PotentialModLists = [list(modlist) for modlist in PotentialModLists]
 
-
-
-print(len(PotentialModLists))
-
-
 count = 0
-
 FinalModLists = []
 
 for modlist in PotentialModLists:
@@ -358,17 +312,13 @@ for modlist in PotentialModLists:
   if check_if_bad(modlist) == "Don't know":
     FinalModLists = FinalModLists + [solidmodlist]
 
-print(len(FinalModLists))
-
-
-
-
+print(FinalModLists)
 
 for candidate in FinalModLists:
   for sys in make_cs_shortlist(candidate):
     if check_if_cs(sys) == True and check_if_minimal(sys)==True:
       print(sys)
-'''
+
 
 
 
