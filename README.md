@@ -1,3 +1,5 @@
-# Kinnaird2022, summer research program at Millsaps College, Jackson MS
+# Kinnaird2022, Jackson MS
 
-This program was used to classify all distinct minimal covering systems with at most 10 moduli 
+This program was used to classify all distinct minimal covering systems with at most 10 moduli/.
+
+Contributors: Alex Rice, Powers Lamb, Raj Agrawal, Kratik Gupta, Prarthana Bhatia, Rose Ward
