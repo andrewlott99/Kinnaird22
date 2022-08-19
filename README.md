@@ -1,4 +1,4 @@
-# Kinnaird2022, Jackson MS
+Kinnaird2022, Millsaps College, Jackson MS
 
 This program was used to classify all distinct minimal covering systems with at most 10 moduli/.
 
